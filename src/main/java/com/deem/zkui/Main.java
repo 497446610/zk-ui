@@ -49,11 +49,11 @@ public class Main {
 
         logger.debug("Starting ZKUI!");
         Properties globalProps = new Properties();
-        File f = new File("config.cfg");
+        File f = new File("config.properties");
         if (f.exists()) {
-            globalProps.load(new FileInputStream("config.cfg"));
+            globalProps.load(new FileInputStream("config.properties"));
         } else {
-            System.out.println("Please create config.cfg properties file and then execute the program!");
+            System.out.println("Please create config.properties  file and then execute the program!");
             System.exit(1);
         }
 
@@ -107,8 +107,9 @@ public class Main {
             http.setPort(Integer.parseInt(globalProps.getProperty("serverPort")));
             server.setConnectors(new Connector[]{http});
         }
-
         server.start();
+        logger.info("server port:{}", globalProps.getProperty("serverPort")) ;
+        System.out.println("server port:" + globalProps.getProperty("serverPort"));
         server.join();
     }
 

@@ -21,12 +21,17 @@
         <#include "../common/include.ftl.html"/>
     </head>
     <body>
-        <div id="wrap">
-            <#include "../common/menubar.ftl.html"/>
-            <!-- Content starts -->
-            <#nested>
-            <!-- Content ends -->
-        </div>        
+        	<div>
+	            <#include "../common/menubar.ftl.html"/>
+	            	<div class="row" style="height:30px">
+	            	</div>
+		            <div class="container-fluid">
+		            <!-- Content starts -->
+		            <#nested>
+		            <!-- Content ends -->
+		             </div>     
+            </div>
+          
     </body>
 </html>
 </#macro>
