@@ -53,7 +53,7 @@ public class AuthFilter implements Filter {
                 }
 
             } else {
-                request.setAttribute("fail_msg", "Session timed out!");
+                request.setAttribute("fail_msg", "登陆超时，请重新登陆!");
                 dispatcher = request.getRequestDispatcher("/Login");
                 dispatcher.forward(request, response);
                 return;

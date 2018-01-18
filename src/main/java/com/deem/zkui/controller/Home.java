@@ -135,7 +135,7 @@ public class Home extends HttpServlet {
 			String authRole = (String) request.getSession().getAttribute("authRole");
 
 			switch (action) {
-			case "Save Node":
+			case "保存节点":
 				if (!newNode.equals("") && !currentPath.equals("") && authRole.equals(ZooKeeperUtil.ROLE_ADMIN)) {
 					// Save the new node.
 					ZooKeeperUtil.INSTANCE.createFolder(currentPath + newNode, "foo", "bar",
@@ -146,7 +146,7 @@ public class Home extends HttpServlet {
 				}
 				response.sendRedirect("/home?zkPath=" + displayPath);
 				break;
-			case "Save Property":
+			case "保存属性":
 				if (!newProperty.equals("") && !currentPath.equals("") && authRole.equals(ZooKeeperUtil.ROLE_ADMIN)) {
 					// Save the new node.
 					ZooKeeperUtil.INSTANCE.createNode(currentPath, newProperty, newValue,
@@ -160,7 +160,7 @@ public class Home extends HttpServlet {
 				}
 				response.sendRedirect("/home?zkPath=" + displayPath);
 				break;
-			case "Update Property":
+			case "更新属性":
 				if (!newProperty.equals("") && !currentPath.equals("") && authRole.equals(ZooKeeperUtil.ROLE_ADMIN)) {
 					// Save the new node.
 					ZooKeeperUtil.INSTANCE.setPropertyValue(currentPath, newProperty, newValue,
@@ -174,13 +174,13 @@ public class Home extends HttpServlet {
 				}
 				response.sendRedirect("/home?zkPath=" + displayPath);
 				break;
-			case "Search":
+			case "搜索":
 				Set<LeafBean> searchResult = ZooKeeperUtil.INSTANCE.searchTree(searchStr,
 						ServletUtil.INSTANCE.getZookeeper(request, response, zkServerLst[0], globalProps), authRole);
 				templateParam.put("searchResult", searchResult);
 				ServletUtil.INSTANCE.renderHtml(request, response, templateParam, "search.ftl.html");
 				break;
-			case "Delete":
+			case "删除":
 				if (authRole.equals(ZooKeeperUtil.ROLE_ADMIN)) {
 
 					if (propChkGroup != null) {

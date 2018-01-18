@@ -72,7 +72,8 @@ public class Main {
         servletContextHandler.setParentLoaderPriority(true);
         servletContextHandler.setInitParameter("useFileMappedBuffer", "false");
         servletContextHandler.setAttribute("globalProps", globalProps);
-
+        
+        
         ResourceHandler staticResourceHandler = new ResourceHandler();
         staticResourceHandler.setDirectoriesListed(false);
         Resource staticResources = Resource.newClassPathResource(webFolder);
@@ -81,6 +82,7 @@ public class Main {
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{staticResourceHandler, servletContextHandler});
+        
 
         server.setHandler(handlers);
         HttpConfiguration http_config = new HttpConfiguration();

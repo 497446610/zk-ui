@@ -62,6 +62,7 @@ public enum ServletUtil {
                 Configuration config = new Configuration();
                 config.setClassForTemplateLoading(request.getServletContext().getClass(), "/");
                 template = config.getTemplate("/webapp/template/" + view);
+                //template.setEncoding("gbk");
                 template.process(templateParam, response.getWriter());
                 long estimatedTime = System.currentTimeMillis() - startTime;
                 logger.trace("Elapsed Time in Secs for Rendering: " + estimatedTime / 1000);
