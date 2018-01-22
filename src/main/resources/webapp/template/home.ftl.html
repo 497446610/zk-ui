@@ -147,7 +147,10 @@
                                     <span class="input-group-addon">名称</span>
                                     <input type="text" name="newNode" class="form-control" placeholder="名称">
                                 </div>
-
+                                
+                                <div>
+                                	<span>支持多层节点，以"/"号作为分割</span>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -159,7 +162,7 @@
 
                 <!-- Add Property Modal -->
                 <div class="modal fade" id="addPropertyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog dialog1">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -199,6 +202,36 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                 <input type="submit" name="action" value="删除" class="btn btn-primary"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Copy Node Modal -->
+                <div class="modal fade" id="copyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog dialog1">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">复制节点</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-addon">源节点</span>
+                                    <input type="text" id="copyNode"  name="copyNode" class="form-control" readonly="readonly" value="${displayPath}">
+                                </div>
+                                <br/>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-addon">目标点</span>
+                                    <input id="toNode" name="toNode" class="form-control" placeholder="路径" style="resize:vertical;" ></input>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            	 <div class="checkbox text-left">
+                                    <label><input type="checkbox" name="cpOverwrite" value="true">覆盖已经存在的属性</label>
+                                </div>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <input type="submit" id="copyNodeBtn" name="action" value="复制节点" class="btn btn-primary"/>
                             </div>
                         </div>
                     </div>

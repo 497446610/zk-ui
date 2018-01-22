@@ -128,6 +128,11 @@ public class Home extends HttpServlet {
 			String newValue = request.getParameter("newValue");
 			String newNode = request.getParameter("newNode");
 
+			// 复制节点
+			String copyNode = request.getParameter("copyNode");
+			String toNode = request.getParameter("toNode");
+			String cpOverwrite = request.getParameter("cpOverwrite");
+
 			String[] nodeChkGroup = request.getParameterValues("nodeChkGroup");
 			String[] propChkGroup = request.getParameterValues("propChkGroup");
 
@@ -138,9 +143,26 @@ public class Home extends HttpServlet {
 			case "保存节点":
 				if (!newNode.equals("") && !currentPath.equals("") && authRole.equals(ZooKeeperUtil.ROLE_ADMIN)) {
 					// Save the new node.
-					ZooKeeperUtil.INSTANCE.createFolder(currentPath + newNode, "foo", "bar",
-							ServletUtil.INSTANCE.getZookeeper(request, response, zkServerLst[0], globalProps));
-					request.getSession().setAttribute("flashMsg", "Node created!");
+
+					String[] nodes = newNode.split("/");
+					StringBuilder nodePathBuilder = new StringBuilder(currentPath);
+					for (String node : nodes) {
+						if (node.length() == 0) {
+							continue;
+						}
+						nodePathBuilder.append(node);
+						ZooKeeperUtil.INSTANCE.createFolder(nodePathBuilder.toString(), "foo", "bar",
+								ServletUtil.INSTANCE.getZookeeper(request, response, zkServerLst[0], globalProps));
+						nodePathBuilder.append("/");
+					}
+
+					/*
+					 * ZooKeeperUtil.INSTANCE.createFolder(currentPath + newNode, "foo", "bar",
+					 * ServletUtil.INSTANCE.getZookeeper(request, response, zkServerLst[0],
+					 * globalProps));
+					 */
+
+					request.getSession().setAttribute("flashMsg", "保存成功!");
 					dao.insertHistory((String) request.getSession().getAttribute("authName"), request.getRemoteAddr(),
 							"Creating node: " + currentPath + newNode);
 				}
@@ -151,7 +173,7 @@ public class Home extends HttpServlet {
 					// Save the new node.
 					ZooKeeperUtil.INSTANCE.createNode(currentPath, newProperty, newValue,
 							ServletUtil.INSTANCE.getZookeeper(request, response, zkServerLst[0], globalProps));
-					request.getSession().setAttribute("flashMsg", "Property Saved!");
+					request.getSession().setAttribute("flashMsg", "保存成功!");
 					if (ZooKeeperUtil.INSTANCE.checkIfPwdField(newProperty)) {
 						newValue = ZooKeeperUtil.INSTANCE.SOPA_PIPA;
 					}
@@ -165,7 +187,7 @@ public class Home extends HttpServlet {
 					// Save the new node.
 					ZooKeeperUtil.INSTANCE.setPropertyValue(currentPath, newProperty, newValue,
 							ServletUtil.INSTANCE.getZookeeper(request, response, zkServerLst[0], globalProps));
-					request.getSession().setAttribute("flashMsg", "Property Updated!");
+					request.getSession().setAttribute("flashMsg", "保存成功!");
 					if (ZooKeeperUtil.INSTANCE.checkIfPwdField(newProperty)) {
 						newValue = ZooKeeperUtil.INSTANCE.SOPA_PIPA;
 					}
@@ -188,7 +210,7 @@ public class Home extends HttpServlet {
 							List delPropLst = Arrays.asList(prop);
 							ZooKeeperUtil.INSTANCE.deleteLeaves(delPropLst,
 									ServletUtil.INSTANCE.getZookeeper(request, response, zkServerLst[0], globalProps));
-							request.getSession().setAttribute("flashMsg", "Delete Completed!");
+							request.getSession().setAttribute("flashMsg", "删除成功!");
 							dao.insertHistory((String) request.getSession().getAttribute("authName"),
 									request.getRemoteAddr(), "Deleting Property: " + delPropLst.toString());
 						}
@@ -198,7 +220,7 @@ public class Home extends HttpServlet {
 							List delNodeLst = Arrays.asList(node);
 							ZooKeeperUtil.INSTANCE.deleteFolders(delNodeLst,
 									ServletUtil.INSTANCE.getZookeeper(request, response, zkServerLst[0], globalProps));
-							request.getSession().setAttribute("flashMsg", "Delete Completed!");
+							request.getSession().setAttribute("flashMsg", "删除成功!");
 							dao.insertHistory((String) request.getSession().getAttribute("authName"),
 									request.getRemoteAddr(), "Deleting Nodes: " + delNodeLst.toString());
 						}
@@ -206,6 +228,12 @@ public class Home extends HttpServlet {
 
 				}
 				response.sendRedirect("/home?zkPath=" + displayPath);
+				break;
+			case "复制节点":
+				boolean overwrite = "true".equalsIgnoreCase(cpOverwrite);
+				ZooKeeperUtil.INSTANCE.copyData(copyNode, toNode, overwrite,
+						ServletUtil.INSTANCE.getZookeeper(request, response, zkServerLst[0], globalProps), authRole);
+				response.sendRedirect("/home?zkPath=" + toNode);
 				break;
 			default:
 				response.sendRedirect("/home");

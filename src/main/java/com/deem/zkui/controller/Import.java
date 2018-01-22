@@ -144,7 +144,7 @@ public class Import extends HttpServlet {
                     dao.insertHistory((String) request.getSession().getAttribute("authName"), request.getRemoteAddr(), "File: " + uploadFileName + ", Adding Entry: " + line);
                 }
             }
-            request.getSession().setAttribute("flashMsg", "Import Completed!");
+            request.getSession().setAttribute("flashMsg", "导入成功!");
             response.sendRedirect("/home");
         } catch (FileUploadException | IOException | InterruptedException | KeeperException ex) {
             logger.error(Arrays.toString(ex.getStackTrace()));
